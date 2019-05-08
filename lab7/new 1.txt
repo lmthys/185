@@ -1,0 +1,21 @@
+test = b_Down;
+        printf("%d",test); 		// if the button is pressed test = 1
+		
+		/*if(test){ //if test is 1 then it evaluates to true
+			if(soManyChoices){ //if so.. is 1 it sets so.. to 0 
+				soManyChoices = 0; 
+				
+			}
+			else { // if so.. is not 1 then it is set to one
+				soManyChoices = 1; 
+			}
+			
+		}
+		else if(soManyChoices){ // if so.. is 1 then we are calc-ing pitch
+			scaled_value = scaleRadsForScreen(pitch_rad);
+			printf("Here pitch"); 
+		}
+		else{ // if we have not pressed any buttons intially we are calc-ing roll
+			scaled_value = scaleRadsForScreen(roll_rad); 
+			printf("here Roll"); 
+		}*/

@@ -1,0 +1,360 @@
+{\rtf1\ansi\deff0\deftab480
+
+{\fonttbl
+{\f000 Courier New;}
+{\f001 Courier New;}
+{\f002 Courier New;}
+{\f003 Courier New;}
+{\f004 Courier New;}
+{\f005 Courier New;}
+{\f006 Courier New;}
+{\f007 Courier New;}
+{\f008 Courier New;}
+{\f009 Courier New;}
+{\f010 Courier New;}
+}
+
+{\colortbl
+\red000\green000\blue000;
+\red255\green255\blue255;
+\red000\green128\blue000;
+\red255\green255\blue255;
+\red000\green128\blue000;
+\red255\green255\blue255;
+\red255\green128\blue000;
+\red255\green255\blue255;
+\red000\green000\blue255;
+\red255\green255\blue255;
+\red128\green128\blue128;
+\red255\green255\blue255;
+\red128\green064\blue000;
+\red255\green255\blue255;
+\red000\green000\blue128;
+\red255\green255\blue255;
+\red000\green000\blue000;
+\red255\green255\blue255;
+\red128\green000\blue255;
+\red255\green255\blue255;
+\red000\green000\blue000;
+\red255\green255\blue255;
+}
+
+\f4587552\fs20\cb21\cf20 \highlight1\cf0 \par
+\highlight5\cf4 // Headers\par
+\highlight13\cf12 #include <stdio.h>\par
+#include <math.h>\par
+#include <ncurses/ncurses.h>\par
+#include <unistd.h>\par
+#include <stdlib.h>\par
+#include <time.h>\par
+\highlight1\cf0 \par
+\par
+\highlight5\cf4 // Mathematical constants\par
+\highlight13\cf12 #define PI 3.14159\par
+\highlight1\cf0 \par
+\highlight3\cf2 /* Screen geometry\par
+Use NUMROWS and NUMCOLS for the screen height and width (set by system)\par
+*/\highlight1\cf0 \par
+\highlight13\cf12 #define NUMROWS 80\par
+#define NUMCOLS 100\par
+\highlight1\cf0 \par
+\highlight3\cf2 /* Character definitions */\highlight1\cf0 \par
+\highlight13\cf12 #define AVATAR 'A'\par
+#define WALL '*'\par
+#define EMPTY_SPACE ' '\par
+\highlight1\cf0 \par
+\highlight3\cf2 /*Number of samples taken to form an average for the accelerometer data\par
+Feel free to tweak this.  You may actually want to use the moving averages\par
+code you created last week along with this number as your windowing size\par
+to get a playable game*/\highlight1\cf0 \par
+\highlight13\cf12 #define NUM_SAMPLES 10  \par
+\highlight1\cf0 \par
+\par
+\highlight3\cf2 /* 2D character array which the maze is mapped into\par
+ You should fill this with characters, not numbers. */\highlight1\cf0 \par
+\highlight19\cf18 char\highlight1\cf0  \highlight17\cf16 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 NUMROWS\highlight15\cf14\b ][\highlight17\cf16\b0 NUMCOLS\highlight15\cf14\b ];\highlight1\cf0\b0 \par
+\par
+\par
+\highlight3\cf2 /* PRE: The level of difficulty will be entered on the command line. \par
+You will have to use the argument to the command line to determine how \par
+difficult the maze is (how many maze characters are on the screen).\par
+POST: Generates a random maze structure into MAZE[][]\par
+You will want to use the rand() function and maybe use the output %100. */\highlight1\cf0 \par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 generate_maze\highlight15\cf14\b (\highlight19\cf18\b0 int\highlight1\cf0  \highlight17\cf16 difficulty\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\par
+\highlight3\cf2 /* PRE: MAZE[][] has been initialized by generate_maze()\par
+POST: Draws the maze to the screen.  You must use the draw_character\par
+function to print to the screen.  You cannot use printf in curses.  */\highlight1\cf0 \par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 draw_maze\highlight15\cf14\b (\highlight19\cf18\b0 void\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\par
+\highlight3\cf2 /* PRE: 0 < x < NUMCOLS, 0 < y < NUMROWS, characters are defined above\par
+POST: Draws character use to the screen and position y,x as in a graph\par
+where x is the horizontal axis and y is the vertical axis.  \par
+When using the i and j from the maze, you will want to remember that \par
+i (outer loop) is the rows and corresponds to y, while j is the columns \par
+and corresponds to x.  */\highlight1\cf0 \par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight19\cf18\b0 int\highlight1\cf0  \highlight17\cf16 x\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 y\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 char\highlight1\cf0  \highlight17\cf16 use\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\par
+\highlight3\cf2 /* PRE: -1.0 < x_mag < 1.0\par
+POST: Returns tilt magnitude scaled to -1.0 -> 1.0\par
+You may want to reuse the roll function written in previous labs. */\highlight1\cf0  \par
+\par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 calc_roll\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 x_mag\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 updatebuffer\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 buffer\highlight15\cf14\b [],\highlight1\cf0\b0  \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 length\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 new_item\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 avg\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 buffer\highlight15\cf14\b [],\highlight1\cf0\b0  \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 num_items\highlight15\cf14\b );\highlight1\cf0\b0   \par
+\par
+\highlight5\cf4 // Main - Run with './explore.exe -t -a -b' piped into STDIN\par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 main\highlight15\cf14\b (\highlight19\cf18\b0 int\highlight1\cf0  \highlight17\cf16 argc\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 char\highlight15\cf14\b *\highlight1\cf0\b0  \highlight17\cf16 argv\highlight15\cf14\b [])\highlight1\cf0\b0 \par
+\highlight15\cf14\b \{\highlight1\cf0\b0 \par
+    \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 difficulty\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+    \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 t\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 time2\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 time3\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 time\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 time4\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 time5\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 timeSet\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 leftB\highlight15\cf14\b ,\highlight17\cf16\b0 upB\highlight15\cf14\b ,\highlight17\cf16\b0 downB\highlight15\cf14\b ,\highlight17\cf16\b0 rightB\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 joy\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 s\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 ay\highlight1\cf0  \highlight15\cf14\b ,\highlight17\cf16\b0 az\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 i\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 j\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 avgX\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 new\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 arrayX\highlight15\cf14\b [\highlight7\cf6\b0 1000\highlight15\cf14\b ];\highlight1\cf0\b0 \tab \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 x\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 y\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 game\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 win\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \par
+\tab \tab \par
+\par
+\tab \highlight5\cf4 // setup screen    \par
+\highlight1\cf0 \tab \highlight17\cf16 initscr\highlight15\cf14\b ();\highlight1\cf0\b0 \par
+\tab \highlight17\cf16 refresh\highlight15\cf14\b ();\highlight1\cf0\b0 \par
+   \par
+\tab \highlight17\cf16 sscanf\highlight15\cf14\b (\highlight17\cf16\b0 argv\highlight15\cf14\b [\highlight7\cf6\b0 1\highlight15\cf14\b ],\highlight1\cf0\b0  \highlight11\cf10 "%d"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 difficulty\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \par
+\tab \par
+\tab \highlight17\cf16 generate_maze\highlight15\cf14\b (\highlight17\cf16\b0 difficulty\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \par
+\tab \par
+\tab \tab  \highlight5\cf4 // Generate and draw the maze, with initial avatar\par
+\highlight1\cf0     \par
+\tab \highlight17\cf16 draw_maze\highlight15\cf14\b ();\highlight1\cf0\b0 \par
+   \par
+\tab \par
+\tab  \par
+\tab \highlight17\cf16 x\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 50\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+    \highlight17\cf16 y\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \par
+    \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 AVATAR\highlight15\cf14\b );\highlight1\cf0\b0 \tab \tab \par
+\tab \par
+\tab \highlight5\cf4 // Event loop\par
+\highlight1\cf0 \tab \highlight9\cf8\b do\highlight1\cf0\b0 \par
+\tab \highlight15\cf14\b \{\highlight1\cf0\b0 \par
+     \highlight17\cf16 scanf\highlight15\cf14\b (\highlight11\cf10\b0 "%d, %lf, %lf, %lf, %d, %d, %d, %d, %d, %d"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 t\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ay\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 az\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 upB\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 downB\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 leftB\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 rightB\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 joy\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 s\highlight15\cf14\b );\highlight5\cf4\b0 // Read accelerometer data to get ready for using moving averages.    \par
+\highlight1\cf0      \par
+\tab \par
+\tab \par
+\tab \par
+\tab \highlight5\cf4 //printf ("%lf\\n", avgX); \par
+\highlight1\cf0 \tab    \par
+\tab \tab \par
+\tab \tab \par
+\tab \tab \highlight17\cf16 time2\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \tab \tab \tab  \par
+\tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 timeSec\highlight1\cf0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 time3\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 time2\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 y\highlight15\cf14\b +\highlight7\cf6\b0 1\highlight15\cf14\b ][\highlight17\cf16\b0 x\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b !=\highlight1\cf0\b0  \highlight17\cf16 WALL\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \par
+\tab \tab \tab \tab \tab     \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 EMPTY_SPACE\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 y\highlight15\cf14\b ++;\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab  \highlight5\cf4 // Delete previous A's  \par
+\highlight1\cf0 \tab \tab \tab \tab \tab \tab \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 AVATAR\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab    \highlight5\cf4 //timeSec = 0; \par
+\highlight1\cf0 \tab \tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \tab \par
+\tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight9\cf8\b else\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight17\cf16 time2\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight17\cf16 time3\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight7\cf6 250\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \par
+\tab \tab \tab \tab \highlight17\cf16 updatebuffer\highlight15\cf14\b (\highlight17\cf16\b0 arrayX\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight7\cf6 25\highlight1\cf0  \highlight15\cf14\b ,\highlight17\cf16\b0 ax\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab             \highlight17\cf16 avgX\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 avg\highlight15\cf14\b (\highlight17\cf16\b0 arrayX\highlight1\cf0  \highlight15\cf14\b ,\highlight7\cf6\b0 25\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \tab         \highlight5\cf4 //new = calc_roll(avgX); \par
+\highlight1\cf0 \tab \tab \par
+\tab \tab \par
+\tab \tab \highlight17\cf16 time4\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \tab \tab \tab  \par
+\tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 timeSet\highlight1\cf0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 ((\highlight17\cf16\b0 avgX\highlight1\cf0  \highlight15\cf14\b >\highlight1\cf0\b0  \highlight7\cf6 .2\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b &&\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 x\highlight1\cf0  \highlight15\cf14\b !=\highlight1\cf0\b0  \highlight7\cf6 99\highlight15\cf14\b ))\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \par
+\tab \tab \tab         \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 y\highlight15\cf14\b ][\highlight17\cf16\b0 x\highlight15\cf14\b +\highlight7\cf6\b0 1\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b !=\highlight1\cf0\b0  \highlight17\cf16 WALL\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 time5\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 time4\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \par
+\par
+\tab \tab \tab \tab \tab \tab \tab   \highlight5\cf4 // Move Down the Maze \par
+\highlight1\cf0 \tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 EMPTY_SPACE\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 x\highlight15\cf14\b ++;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \tab \tab \par
+\tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 AVATAR\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 timeSet\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \tab \par
+\tab \tab \tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+                \highlight9\cf8\b if\highlight15\cf14 ((\highlight17\cf16\b0 avgX\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight15\cf14\b -\highlight7\cf6\b0 .2\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b &&\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 x\highlight1\cf0  \highlight15\cf14\b !=\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \par
+\tab \tab \tab         \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 y\highlight15\cf14\b ][\highlight17\cf16\b0 x\highlight15\cf14\b -\highlight7\cf6\b0 1\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b !=\highlight1\cf0\b0  \highlight17\cf16 WALL\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 time5\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 time4\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \par
+\par
+\tab \tab \tab \tab \tab \tab \tab   \highlight5\cf4 // Move Down the Maze \par
+\highlight1\cf0 \tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 EMPTY_SPACE\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 x\highlight15\cf14\b --;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \tab \tab \par
+\tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 AVATAR\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \tab \highlight17\cf16 timeSet\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \tab \par
+\tab \tab \tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \tab \tab \tab \tab \par
+\tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight9\cf8\b else\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight17\cf16 time4\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight17\cf16 time5\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight7\cf6 250\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight17\cf16 timeSet\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \par
+\tab     \par
+\tab \tab \highlight5\cf4 // Read data, update average\par
+\highlight1\cf0 \tab \tab \par
+\tab \tab \highlight9\cf8\b if\highlight15\cf14 ((\highlight17\cf16\b0 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 y\highlight15\cf14\b ][\highlight17\cf16\b0 x\highlight15\cf14\b -\highlight7\cf6\b0 1\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight17\cf16 WALL\highlight15\cf14\b )&&(\highlight17\cf16\b0 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 y\highlight15\cf14\b ][\highlight17\cf16\b0 x\highlight15\cf14\b +\highlight7\cf6\b0 1\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight17\cf16 WALL\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b &&(\highlight17\cf16\b0 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 y\highlight15\cf14\b +\highlight7\cf6\b0 1\highlight15\cf14\b ][\highlight17\cf16\b0 x\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight17\cf16 WALL\highlight15\cf14\b ))\{\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 game\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 win\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0  \par
+\tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 y\highlight1\cf0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight7\cf6 79\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 game\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \highlight17\cf16 win\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\par
+\tab \tab  \par
+   \tab  \par
+\tab \par
+\tab  \highlight5\cf4 //ay = 0; \par
+\highlight1\cf0 \tab  \par
+\tab \par
+\tab \tab \highlight5\cf4 // Is it time to move?  if so, then move avatar\par
+\highlight1\cf0 \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0  \highlight9\cf8\b while\highlight15\cf14 (\highlight17\cf16\b0 game\highlight1\cf0  \highlight15\cf14\b !=\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b );\highlight1\cf0\b0  \highlight5\cf4 // Change this to end game at right time \par
+\highlight1\cf0 \par
+\tab \highlight5\cf4 // Print the win message\par
+\highlight1\cf0 \tab \highlight17\cf16 endwin\highlight15\cf14\b ();\highlight1\cf0\b0 \par
+\tab \par
+\tab \highlight9\cf8\b if\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 win\highlight1\cf0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "YOU WIN!\\n"\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \highlight9\cf8\b else\highlight1\cf0\b0  \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 win\highlight1\cf0  \highlight15\cf14\b ==\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "YOU LOSE!\\n"\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\par
+\par
+\par
+\highlight3\cf2 /* PRE: 0 < x < NUMCOLS, 0 < y < NUMROWS, characters are defined above\par
+POST: Draws character use to the screen and position y,x as in a graph\par
+where x is the horizontal axis and y is the vertical axis.  \par
+When using the i and j to draw the maze, you will want to remember that \par
+i (outer loop) is the rows and corresponds to y, while j (the inner loop) is the columns \par
+and corresponds to x. \par
+\par
+This code places the Avatar and the maze on the screen.  \par
+\par
+IT WORKS CORRECTLY AS PROVIDED.  \par
+PLEASE DO NOT CHANGE THIS FUNCTION. */\highlight1\cf0 \par
+\par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight19\cf18\b0 int\highlight1\cf0  \highlight17\cf16 x\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 y\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 char\highlight1\cf0  \highlight17\cf16 use\highlight15\cf14\b )\highlight1\cf0\b0 \par
+\highlight15\cf14\b \{\highlight1\cf0\b0 \par
+\tab \highlight17\cf16 mvaddch\highlight15\cf14\b (\highlight17\cf16\b0 y\highlight15\cf14\b ,\highlight17\cf16\b0 x\highlight15\cf14\b ,\highlight17\cf16\b0 use\highlight15\cf14\b );\highlight1\cf0\b0     \par
+\tab \highlight17\cf16 refresh\highlight15\cf14\b ();\highlight1\cf0\b0 \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 generate_maze\highlight15\cf14\b (\highlight19\cf18\b0 int\highlight1\cf0  \highlight17\cf16 difficulty\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 count\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 i\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 j\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight17\cf16 srand\highlight15\cf14\b ((\highlight19\cf18\b0 int\highlight15\cf14\b )\highlight17\cf16\b0 time\highlight15\cf14\b (\highlight7\cf6\b0 0\highlight15\cf14\b ));\highlight1\cf0\b0 \par
+\tab \par
+\par
+\tab \par
+\tab \par
+\tab \highlight9\cf8\b for\highlight15\cf14 (\highlight17\cf16\b0 i\highlight15\cf14\b =\highlight7\cf6\b0 0\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight15\cf14\b <\highlight17\cf16\b0 NUMROWS\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight15\cf14\b ++)\{\highlight1\cf0\b0 \par
+\tab \tab \par
+\tab \tab \highlight9\cf8\b for\highlight15\cf14 (\highlight17\cf16\b0 j\highlight15\cf14\b =\highlight7\cf6\b0 0\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 j\highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 NUMCOLS\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 j\highlight15\cf14\b ++)\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight17\cf16 count\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0 \tab \highlight15\cf14\b (\highlight17\cf16\b0 rand\highlight15\cf14\b ()%\highlight7\cf6\b0 100\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 count\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 difficulty\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 i\highlight15\cf14\b ][\highlight17\cf16\b0 j\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 WALL\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight9\cf8\b else\highlight15\cf14 \{\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 i\highlight15\cf14\b ][\highlight17\cf16\b0 j\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 EMPTY_SPACE\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \par
+\tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \par
+\tab \par
+   \par
+\tab \par
+\tab \par
+\tab \par
+\tab \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 draw_maze\highlight15\cf14\b (\highlight19\cf18\b0 void\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 i\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 j\highlight15\cf14\b ;\highlight1\cf0\b0  \tab \par
+\tab \highlight9\cf8\b for\highlight15\cf14 (\highlight17\cf16\b0 i\highlight15\cf14\b =\highlight7\cf6\b0 0\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight15\cf14\b <\highlight17\cf16\b0 NUMROWS\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight15\cf14\b ++)\{\highlight1\cf0\b0 \par
+\tab \tab \tab \par
+\par
+\tab \tab \tab \highlight9\cf8\b for\highlight15\cf14 (\highlight17\cf16\b0 j\highlight15\cf14\b =\highlight7\cf6\b0 0\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 j\highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 NUMCOLS\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 j\highlight15\cf14\b ++)\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \highlight17\cf16 draw_character\highlight15\cf14\b (\highlight17\cf16\b0 j\highlight15\cf14\b ,\highlight17\cf16\b0 i\highlight15\cf14\b ,\highlight17\cf16\b0 MAZE\highlight15\cf14\b [\highlight17\cf16\b0 i\highlight15\cf14\b ][\highlight17\cf16\b0 j\highlight15\cf14\b ]);\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 calc_roll\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 x_mag\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 roll\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight17\cf16 roll\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 asin\highlight15\cf14\b (\highlight17\cf16\b0 x_mag\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 roll\highlight1\cf0  \highlight15\cf14\b >\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \highlight17\cf16 roll\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \highlight9\cf8\b else\highlight1\cf0\b0  \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 roll\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight15\cf14\b -\highlight7\cf6\b0 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \highlight17\cf16 roll\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight15\cf14\b -\highlight7\cf6\b0 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight17\cf16 roll\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 void\highlight1\cf0  \highlight17\cf16 updatebuffer\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 buffer\highlight15\cf14\b [],\highlight1\cf0\b0  \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 length\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 new_item\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 i\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight9\cf8\b for\highlight15\cf14 (\highlight17\cf16\b0 i\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight15\cf14\b <\highlight17\cf16\b0 length\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight15\cf14\b ++)\{\highlight1\cf0\b0 \par
+\tab \tab \par
+\tab \tab \par
+\tab \tab                              \par
+\tab \tab \highlight17\cf16 buffer\highlight15\cf14\b [\highlight17\cf16\b0 i\highlight15\cf14\b -\highlight7\cf6\b0 1\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 buffer\highlight15\cf14\b [\highlight17\cf16\b0 i\highlight15\cf14\b ];\highlight1\cf0\b0 \par
+        \tab \tab \par
+ \tab \tab \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \highlight17\cf16 buffer\highlight15\cf14\b [\highlight17\cf16\b0 length\highlight15\cf14\b -\highlight7\cf6\b0 1\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 new_item\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 avg\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 buffer\highlight15\cf14\b [],\highlight1\cf0\b0  \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 num_items\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 i\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+    \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 avg\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+   \tab \par
+\tab \highlight9\cf8\b for\highlight15\cf14 (\highlight17\cf16\b0 i\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 num_items\highlight15\cf14\b ;\highlight1\cf0\b0  \highlight17\cf16 i\highlight15\cf14\b ++)\{\highlight1\cf0\b0 \par
+\tab \highlight17\cf16 avg\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 buffer\highlight15\cf14\b [\highlight17\cf16\b0 i\highlight15\cf14\b ]\highlight1\cf0\b0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight17\cf16 avg\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \highlight17\cf16 avg\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 avg\highlight15\cf14\b /\highlight17\cf16\b0 num_items\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight17\cf16 avg\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\par
+\par
+\par
+\par
+}

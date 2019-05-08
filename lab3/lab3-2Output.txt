@@ -1,0 +1,14 @@
+The value of 6427 + 1725 is 8152
+The value of 6971 times 3925 minus 95 is 27361080
+The value of 79 plus 12 divided by five is 81.00
+The value of 3640.0 divided by 107.9 is 33.73
+The value of 22 divided by 3 times 3 is 21
+The value of 22 divided by 3 times 3 is 2
+The value of 22 divided by 3 times 3 is 2.00
+The value of 22 divided by 3 times 3 is 21.00
+The value of 22.0 divided by 3 times 3 is 22.00
+The value of 22.0 divided by 3 times 3.0 is 2
+The value of 22.0 divided by 3.0 times 3.0 is 22.00
+The circumference of a circle that has a radius of 7.5012 is 23.567
+14 feet is 4.2672 meters
+76 degrees Fahrenheit is 24.44 degrees centigrade

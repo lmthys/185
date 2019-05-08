@@ -1,0 +1,209 @@
+{\rtf1\ansi\deff0\deftab480
+
+{\fonttbl
+{\f000 Courier New;}
+{\f001 Courier New;}
+{\f002 Courier New;}
+{\f003 Courier New;}
+{\f004 Courier New;}
+{\f005 Courier New;}
+{\f006 Courier New;}
+{\f007 Courier New;}
+{\f008 Courier New;}
+{\f009 Courier New;}
+{\f010 Courier New;}
+}
+
+{\colortbl
+\red000\green000\blue000;
+\red255\green255\blue255;
+\red000\green128\blue000;
+\red255\green255\blue255;
+\red000\green128\blue000;
+\red255\green255\blue255;
+\red255\green128\blue000;
+\red255\green255\blue255;
+\red000\green000\blue255;
+\red255\green255\blue255;
+\red128\green128\blue128;
+\red255\green255\blue255;
+\red128\green064\blue000;
+\red255\green255\blue255;
+\red000\green000\blue128;
+\red255\green255\blue255;
+\red000\green000\blue000;
+\red255\green255\blue255;
+\red128\green000\blue255;
+\red255\green255\blue255;
+\red000\green000\blue000;
+\red255\green255\blue255;
+}
+
+\f0\fs20\cb21\cf20 \highlight3\cf2 /* Larisa Andrews, Section T, 10/15/2015 */\highlight1\cf0 \par
+\highlight3\cf2 /* Lab 5 Wrapper Program */\highlight1\cf0 \par
+\par
+\highlight13\cf12 #include <stdio.h>\par
+#include <math.h>\par
+\highlight1\cf0 \par
+\highlight13\cf12 #define TRUE 1\par
+#define TIME 100\par
+\highlight1\cf0 \par
+\par
+\highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 Close_To\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 tolerance\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 point\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 value\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 mag\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 x\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 y\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 z\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 seconds\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 time\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 Distance\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 time\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 PercentLess\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 actual\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 theory\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\par
+\highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 main\highlight15\cf14\b (\highlight19\cf18\b0 void\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 ay\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 az\highlight15\cf14\b ;\highlight1\cf0\b0  \tab \par
+    \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 time\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 time2\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 time3\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+    \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 t2\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 t3\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 t4\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 oldT3\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 newT\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 x0\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 xPosition\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 oldV\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 newV\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 oldX\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+    \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 second\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 dataRec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+          \highlight17\cf16 scanf\highlight15\cf14\b (\highlight11\cf10\b0 "%d, %lf, %lf, %lf"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 t\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ay\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 az\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab       \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "Ok, I'm now receiving data.\\n"\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \tab   \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \tab \par
+\tab \tab  \par
+\tab \tab \tab \par
+\tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "I'm Waiting"\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0  \par
+            \par
+\tab \tab     \par
+           \highlight9\cf8\b while\highlight15\cf14 (\highlight17\cf16\b0 Close_To\highlight15\cf14\b (\highlight7\cf6\b0 .2\highlight15\cf14\b ,\highlight7\cf6\b0 1\highlight15\cf14\b ,\highlight17\cf16\b0 mag\highlight15\cf14\b (\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight17\cf16\b0 ay\highlight15\cf14\b ,\highlight17\cf16\b0 az\highlight15\cf14\b ))==\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b )\{\highlight1\cf0\b0  \par
+                \highlight17\cf16 scanf\highlight15\cf14\b (\highlight11\cf10\b0 "%d, %lf, %lf, %lf"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 t\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ay\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 az\highlight15\cf14\b );\highlight1\cf0\b0 \par
+                \highlight17\cf16 time2\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+ \tab \tab \tab \tab \par
+\tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 ((\highlight17\cf16\b0 timeSec\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b ==\highlight7\cf6\b0 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 time3\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 time2\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "."\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight9\cf8\b else\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight17\cf16 time2\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \highlight17\cf16 time3\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight17\cf16 TIME\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \par
+\tab \tab    \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "\\n\\n"\highlight15\cf14\b );\highlight1\cf0\b0 \par
+            \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0 \tab \par
+            \highlight17\cf16 t2\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \tab \par
+           \tab \tab \tab \par
+            \highlight9\cf8\b while\highlight15\cf14 (\highlight17\cf16\b0 Close_To\highlight15\cf14\b (\highlight7\cf6\b0 .2\highlight15\cf14\b ,\highlight7\cf6\b0 1\highlight15\cf14\b ,\highlight17\cf16\b0 mag\highlight15\cf14\b (\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight17\cf16\b0 ay\highlight15\cf14\b ,\highlight17\cf16\b0 az\highlight15\cf14\b ))==\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight17\cf16 scanf\highlight15\cf14\b (\highlight11\cf10\b0 "%d, %lf, %lf, %lf"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 t\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ay\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 az\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight17\cf16 newT\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 dataRec\highlight1\cf0  \highlight15\cf14\b !=\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "         Help Me! I'm falling"\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight17\cf16 oldT3\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \highlight17\cf16 dataRec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab     \highlight17\cf16 time2\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+              \tab \highlight9\cf8\b if\highlight15\cf14 ((\highlight17\cf16\b0 timeSec\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b ==\highlight7\cf6\b0 1\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight9\cf8\b if\highlight15\cf14 (\highlight17\cf16\b0 time3\highlight1\cf0  \highlight15\cf14\b <\highlight1\cf0\b0  \highlight17\cf16 time2\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "!"\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \tab \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight9\cf8\b else\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \tab \highlight17\cf16 time2\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \highlight17\cf16 time3\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight17\cf16 TIME\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \tab \highlight17\cf16 timeSec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight17\cf16 second\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 newT\highlight1\cf0  \highlight15\cf14\b -\highlight1\cf0\b0  \highlight17\cf16 oldT3\highlight15\cf14\b )/\highlight7\cf6\b0 1000.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab \tab \tab \highlight5\cf4 //printf("%d\\n", newT); \par
+\highlight1\cf0 \tab \tab \tab \tab \highlight5\cf4 //printf("%lf\\n", mag(ax,ay,az));\par
+\highlight1\cf0 \tab \tab \tab \tab \highlight5\cf4 //printf("%lf\\n", oldV);\par
+\highlight1\cf0 \tab \tab \tab \tab \highlight17\cf16 newV\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 oldV\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight15\cf14\b ((\highlight7\cf6\b0 1\highlight1\cf0  \highlight15\cf14\b -\highlight1\cf0\b0  \highlight17\cf16 mag\highlight15\cf14\b (\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 ay\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 az\highlight15\cf14\b ))\highlight1\cf0\b0   \highlight15\cf14\b *\highlight1\cf0\b0  \highlight15\cf14\b (\highlight7\cf6\b0 9.8\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b *\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 second\highlight15\cf14\b ));\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab     \highlight17\cf16 xPosition\highlight1\cf0   \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 oldX\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight15\cf14\b ((\highlight17\cf16\b0 newV\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b *\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 second\highlight15\cf14\b ));\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab     \highlight17\cf16 oldT3\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab     \highlight17\cf16 oldV\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 newV\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab         \highlight17\cf16 oldX\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 xPosition\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \tab \par
+            \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 scanf\highlight15\cf14\b (\highlight11\cf10\b0 "%d, %lf, %lf, %lf"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 t\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ax\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 ay\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight15\cf14\b &\highlight17\cf16\b0 az\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 t3\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "\\n\\n"\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight5\cf4 //printf("%d",t3); \par
+\highlight1\cf0 \tab \tab \tab \highlight17\cf16 fflush\highlight15\cf14\b (\highlight17\cf16\b0 stdout\highlight15\cf14\b );\highlight1\cf0\b0 \par
+\tab \tab \tab \highlight17\cf16 t4\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 t3\highlight1\cf0  \highlight15\cf14\b -\highlight1\cf0\b0  \highlight17\cf16 t2\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \tab     \par
+\tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "                Ouch! I fell %lf meters in %lf seconds.\\n"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 Distance\highlight15\cf14\b (\highlight17\cf16\b0 seconds\highlight15\cf14\b (\highlight17\cf16\b0 t4\highlight15\cf14\b )),\highlight1\cf0\b0  \highlight17\cf16 seconds\highlight15\cf14\b (\highlight17\cf16\b0 t4\highlight15\cf14\b ));\highlight1\cf0\b0  \par
+            \tab \tab \tab \par
+\tab \tab \tab \tab \par
+\tab \tab \tab \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "                Compensating for air resistance, the fall was %lf meters.\\n"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 xPosition\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \tab \tab \par
+\tab \tab     \highlight17\cf16 printf\highlight15\cf14\b (\highlight11\cf10\b0 "                This is %d%% less than computed before.\\n"\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 PercentLess\highlight15\cf14\b (\highlight17\cf16\b0 xPosition\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight17\cf16 Distance\highlight15\cf14\b (\highlight17\cf16\b0 seconds\highlight15\cf14\b (\highlight17\cf16\b0 t4\highlight15\cf14\b ))));\highlight1\cf0\b0  \par
+\tab         \par
+   \par
+    \par
+    \highlight9\cf8\b return\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0 \tab \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\par
+\tab \par
+\par
+\highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 Close_To\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 tolerance\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 point\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 value\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight9\cf8\b if\highlight15\cf14 (((\highlight17\cf16\b0 point\highlight1\cf0  \highlight15\cf14\b -\highlight1\cf0\b0  \highlight17\cf16 tolerance\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b <=\highlight1\cf0\b0  \highlight17\cf16 value\highlight15\cf14\b )&&((\highlight17\cf16\b0 point\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight17\cf16 tolerance\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b >=\highlight1\cf0\b0  \highlight17\cf16 value\highlight15\cf14\b ))\{\highlight1\cf0\b0 \par
+\tab \tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight7\cf6 1\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\tab \highlight9\cf8\b else\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0 \par
+\tab \tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+    \highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 mag\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 x\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 y\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 z\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 magnitude\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight17\cf16 magnitude\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 sqrt\highlight15\cf14\b (\highlight17\cf16\b0 x\highlight15\cf14\b *\highlight17\cf16\b0 x\highlight15\cf14\b +\highlight17\cf16\b0 y\highlight15\cf14\b *\highlight17\cf16\b0 y\highlight15\cf14\b +\highlight17\cf16\b0 z\highlight15\cf14\b *\highlight17\cf16\b0 z\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight17\cf16 magnitude\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 seconds\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 time\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b \{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 sec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight17\cf16 sec\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight17\cf16 time\highlight15\cf14\b /\highlight7\cf6\b0 1000\highlight15\cf14\b ;\highlight1\cf0\b0 \tab \par
+\tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight17\cf16 sec\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 Distance\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 time\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 distance\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0.0\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+    \highlight17\cf16 distance\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight1\cf0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight15\cf14\b (\highlight7\cf6\b0 0\highlight1\cf0  \highlight15\cf14\b *\highlight1\cf0\b0  \highlight17\cf16 time\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b +\highlight1\cf0\b0  \highlight7\cf6 4.9\highlight1\cf0  \highlight15\cf14\b *\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 time\highlight1\cf0  \highlight15\cf14\b *\highlight1\cf0\b0  \highlight17\cf16 time\highlight15\cf14\b );\highlight1\cf0\b0  \par
+\tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight17\cf16 distance\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+\highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 PercentLess\highlight15\cf14\b (\highlight19\cf18\b0 double\highlight1\cf0  \highlight17\cf16 actual\highlight15\cf14\b ,\highlight1\cf0\b0  \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 theory\highlight15\cf14\b )\{\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 double\highlight1\cf0  \highlight17\cf16 percent\highlight15\cf14\b ;\highlight1\cf0\b0 \par
+\tab \highlight19\cf18 int\highlight1\cf0  \highlight17\cf16 percentRound\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 0\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight17\cf16 percent\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight15\cf14\b (\highlight17\cf16\b0 actual\highlight15\cf14\b /\highlight17\cf16\b0 theory\highlight15\cf14\b )\highlight1\cf0\b0  \highlight15\cf14\b *\highlight1\cf0\b0  \highlight7\cf6 100\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight17\cf16 percentRound\highlight1\cf0  \highlight15\cf14\b =\highlight1\cf0\b0  \highlight7\cf6 100\highlight1\cf0  \highlight15\cf14\b -\highlight1\cf0\b0  \highlight17\cf16 percent\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\tab \highlight9\cf8\b return\highlight1\cf0\b0  \highlight17\cf16 percentRound\highlight15\cf14\b ;\highlight1\cf0\b0  \par
+\highlight15\cf14\b \}\highlight1\cf0\b0 \par
+ \par
+\par
+\highlight3\cf2 /* Put your lab 4 functions here, as well as your new function close_to */\highlight1\cf0 \par
+\highlight5\cf4 // Test 1 : .38 m\par
+// Test 2 : .29 m\par
+// Test 3 : .41 m \par
+// Test 4 : .43 m\par
+\highlight1\cf0 \par
+\highlight5\cf4 // Test 5 : .34 m    \par
+// Sample Code Height : 9.81 m \par
+\highlight1\cf0 \par
+\par
+}
